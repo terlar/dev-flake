@@ -87,7 +87,6 @@
         formatter = pkgs.alejandra;
         treefmt.programs = {
           alejandra.enable = true;
-          mdformat.enable = true;
           mdsh.enable = true;
         };
       };
