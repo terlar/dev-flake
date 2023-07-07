@@ -37,7 +37,7 @@ in {
             commands = lib.optional cfg.devshell.addReadmeCommand {
               help = "prints the readme";
               name = "readme";
-              command = "${pkgs.glow}/bin/glow ${rootSrc}/README.md";
+              command = "${pkgs.glow}/bin/glow README.md";
             };
           };
         })

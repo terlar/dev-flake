@@ -36,18 +36,34 @@
       imports = [flake.flakeModule];
 
       flake = {
-        templates = {
-          default = {
-            path = ./template/default;
+        templates = rec {
+          default = subflake;
+
+          subflake = {
+            path = ./template/subflake;
             description = ''
-              A flake using dev-flake. To be placed in a sub-folder of a project, e.g. dev.
+              A flake using dev-flake as subflake. To be placed in a sub-folder of a project, e.g. dev.
             '';
           };
 
-          project = {
-            path = ./template/project;
+          subflake-project = {
+            path = ./template/subflake-project;
             description = ''
-              A project using dev-flake.
+              A project using dev-flake in a subflake.
+            '';
+          };
+
+          root = {
+            path = ./template/root;
+            description = ''
+              A flake using dev-flake.
+            '';
+          };
+
+          root-project = {
+            path = ./template/root-project;
+            description = ''
+              A project using dev-flake in root flake.
             '';
           };
         };
@@ -69,7 +85,11 @@
 
       perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;
-        treefmt.programs.alejandra.enable = true;
+        treefmt.programs = {
+          alejandra.enable = true;
+          mdformat.enable = true;
+          mdsh.enable = true;
+        };
       };
     };
 }
