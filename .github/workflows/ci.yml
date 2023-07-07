@@ -1,0 +1,80 @@
+---
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/ci.yml
+      - flake.lock
+      - flake.nix
+      - 'flake-module/**'
+      - 'template/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/ci.yml
+      - flake.lock
+      - flake.nix
+      - 'flake-module/**'
+      - 'template/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@v4
+        with:
+          diagnostic-endpoint: ''
+
+      - name: Check
+        run: nix flake check
+
+  check-template:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - template: root
+          - template: root-project
+          - template: subflake
+            init_path: dev
+            check_path: dev
+          - template: subflake-project
+            check_path: dev
+
+    name: check-template (${{ matrix.template }})
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@v4
+        with:
+          diagnostic-endpoint: ''
+
+      - name: Initialize template
+        working-directory: ${{ runner.temp }}
+        run: |
+          mkdir -p project
+          cd project
+          git init
+
+          if [[ -n "${{ matrix.init_path }}" ]]; then
+            nix flake init
+            mkdir -p ${{ matrix.init_path }}
+            cd ${{ matrix.init_path }}
+          fi
+
+          nix flake init -t ${{ github.workspace }}#${{ matrix.template }}
+
+          git add --all --intent-to-add
+          nix flake lock
+
+      - name: Check
+        working-directory: ${{ runner.temp }}/project/${{ matrix.check_path }}
+        run: |
+          nix flake lock --override-input dev-flake ${{ github.workspace }}
+          nix flake check
