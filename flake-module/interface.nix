@@ -1,4 +1,5 @@
 {
+  self,
   flake-parts-lib,
   lib,
   ...
@@ -22,6 +23,7 @@ in {
         description = lib.mdDoc ''
           The root source of the project.
         '';
+        default = self.outPath;
       };
 
       rootFlake = lib.mkOption {

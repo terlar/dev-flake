@@ -65,10 +65,7 @@
         };
       };
 
-      dev = {
-        name = "dev-flake";
-        rootSrc = ./.;
-      };
+      dev.name = "dev-flake";
 
       perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;

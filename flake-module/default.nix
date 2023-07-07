@@ -1,10 +1,18 @@
-{call-flake, ...}: toplevel @ {lib, ...}: let
+{call-flake, ...}: toplevel @ {
+  self,
+  lib,
+  ...
+}: let
   inherit (toplevel.config.dev) name rootSrc rootFlake;
 in {
   imports = [./interface.nix];
 
   config = {
-    dev.rootFlake = lib.mkDefault (call-flake rootSrc);
+    dev.rootFlake = lib.mkDefault (
+      if rootSrc == self.outPath
+      then self
+      else call-flake rootSrc
+    );
 
     perSystem = {
       config,
@@ -16,7 +24,10 @@ in {
     in
       lib.mkMerge [
         {
-          _module.args.rootFlake' = toplevel.config.perInput system rootFlake;
+          _module.args.rootFlake' =
+            if rootSrc == self.outPath
+            then config._module.args.self'
+            else toplevel.config.perInput system rootFlake;
         }
 
         (lib.mkIf cfg.devshell.enable {
