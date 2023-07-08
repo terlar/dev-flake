@@ -55,21 +55,23 @@ jobs:
         with:
           diagnostic-endpoint: ''
 
-      - name: Initialize template
+      - name: Initialize project
         working-directory: ${{ runner.temp }}
         run: |
-          mkdir -p project
+          mkdir -p project/${{ matrix.init_path }}
           cd project
           git init
 
-          if [[ -n "${{ matrix.init_path }}" ]]; then
-            nix flake init
-            mkdir -p ${{ matrix.init_path }}
-            cd ${{ matrix.init_path }}
-          fi
+      - name: Initialize root flake
+        if: ${{ matrix.init_path }}
+        working-directory: ${{ runner.temp }}/project
+        run: |
+          nix flake init
 
+      - name: Initialize flake template
+        working-directory: ${{ runner.temp }}/project/${{ matrix.init_path }}
+        run: |
           nix flake init -t ${{ github.workspace }}#${{ matrix.template }}
-
           git add --all --intent-to-add
           nix flake lock
 
