@@ -37,7 +37,19 @@ in {
             commands = lib.optional cfg.devshell.addReadmeCommand {
               help = "prints the readme";
               name = "readme";
-              command = "${pkgs.glow}/bin/glow README.md";
+              command = ''
+                export PRJ_ROOT=''${PRJ_ROOT:-$(git rev-parse --show-toplevel)}
+                export README="$PRJ_ROOT/README.md"
+
+                if [[ -f "$README" ]]; then
+                  ${pkgs.glow}/bin/glow "$README"
+                elif [[ -f "$PRJ_ROOT/README.org" ]]; then
+                  nix --experimental-features 'nix-command flakes' run nixpkgs#pandoc -- -f org -t markdown -o - "$PRJ_ROOT/README.org" \
+                    | ${pkgs.glow}/bin/glow
+                else
+                  >&2 echo "error: no README.md file inside $PRJ_ROOT"
+                fi
+              '';
             };
           };
         })
