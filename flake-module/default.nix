@@ -74,6 +74,7 @@ in {
             check.enable = lib.mkDefault true;
             settings.rootSrc = lib.mkForce rootSrc;
             settings.hooks = {
+              conform.enable = lib.mkDefault true;
               deadnix.enable = lib.mkDefault true;
               statix.enable = lib.mkDefault true;
             };
