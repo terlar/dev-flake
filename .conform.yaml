@@ -23,4 +23,6 @@ policies:
           - refactor
           - style
           - test
+        scopes:
+          - github
         descriptionLength: 72
