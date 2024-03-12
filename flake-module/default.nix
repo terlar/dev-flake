@@ -56,6 +56,7 @@ in {
 
         (lib.mkIf cfg.treefmt.enable {
           treefmt = {
+            flakeCheck = lib.mkDefault (!cfg.pre-commit.enable);
             flakeFormatter = lib.mkDefault false;
             projectRootFile = lib.mkDefault "flake.nix";
           };
