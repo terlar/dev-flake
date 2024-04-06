@@ -23,8 +23,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} rec {
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
       systems = [
         "aarch64-darwin"
         "aarch64-linux"
@@ -33,7 +34,7 @@
       ];
 
       # Dogfooding
-      imports = [flake.flakeModule];
+      imports = [ flake.flakeModule ];
 
       flake = {
         templates = rec {
@@ -68,27 +69,35 @@
           };
         };
 
-        flakeModule = let
-          importApply = modulePath: staticArgs:
-            inputs.nixpkgs.lib.setDefaultModuleLocation modulePath (import modulePath staticArgs);
-        in {
-          imports = [
-            inputs.devshell.flakeModule
-            inputs.pre-commit-hooks.flakeModule
-            inputs.treefmt.flakeModule
-            (importApply ./flake-module {inherit (inputs) call-flake;})
-          ];
-        };
+        flakeModule =
+          let
+            importApply =
+              modulePath: staticArgs:
+              inputs.nixpkgs.lib.setDefaultModuleLocation modulePath (import modulePath staticArgs);
+          in
+          {
+            imports = [
+              inputs.devshell.flakeModule
+              inputs.pre-commit-hooks.flakeModule
+              inputs.treefmt.flakeModule
+              (importApply ./flake-module { inherit (inputs) call-flake; })
+            ];
+          };
       };
 
       dev.name = "dev-flake";
 
-      perSystem = {pkgs, ...}: {
-        formatter = pkgs.alejandra;
-        treefmt.programs = {
-          alejandra.enable = true;
-          mdsh.enable = true;
+      perSystem =
+        { config, pkgs, ... }:
+        {
+          formatter = config.treefmt.programs.nixfmt.package;
+          treefmt.programs = {
+            nixfmt = {
+              enable = true;
+              package = pkgs.nixfmt-rfc-style;
+            };
+            mdsh.enable = true;
+          };
         };
-      };
     };
 }

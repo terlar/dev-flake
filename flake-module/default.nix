@@ -1,33 +1,31 @@
-{call-flake, ...}: toplevel @ {
-  self,
-  lib,
-  ...
-}: let
+{ call-flake, ... }:
+toplevel@{ self, lib, ... }:
+let
   inherit (toplevel.config.dev) name rootSrc rootFlake;
-in {
-  imports = [./interface.nix];
+in
+{
+  imports = [ ./interface.nix ];
 
   config = {
-    dev.rootFlake = lib.mkDefault (
-      if rootSrc == self.outPath
-      then self
-      else call-flake rootSrc
-    );
+    dev.rootFlake = lib.mkDefault (if rootSrc == self.outPath then self else call-flake rootSrc);
 
-    perSystem = {
-      config,
-      pkgs,
-      system,
-      ...
-    }: let
-      cfg = config.dev;
-    in
+    perSystem =
+      {
+        config,
+        pkgs,
+        system,
+        ...
+      }:
+      let
+        cfg = config.dev;
+      in
       lib.mkMerge [
         {
           _module.args.rootFlake' =
-            if rootSrc == self.outPath
-            then config._module.args.self'
-            else toplevel.config.perInput system rootFlake;
+            if rootSrc == self.outPath then
+              config._module.args.self'
+            else
+              toplevel.config.perInput system rootFlake;
         }
 
         (lib.mkIf cfg.devshell.enable {
@@ -84,9 +82,7 @@ in {
           devshells = lib.mkIf cfg.devshell.enable {
             default = {
               devshell.startup.pre-commit-install.text = config.pre-commit.installationScript;
-              commands = lib.optional cfg.devshell.addCommands {
-                inherit (config.pre-commit.settings) package;
-              };
+              commands = lib.optional cfg.devshell.addCommands { inherit (config.pre-commit.settings) package; };
             };
           };
         })

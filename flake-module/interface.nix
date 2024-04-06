@@ -3,10 +3,12 @@
   flake-parts-lib,
   lib,
   ...
-}: let
+}:
+let
   inherit (flake-parts-lib) mkPerSystemOption;
   inherit (lib) types;
-in {
+in
+{
   options = {
     dev = {
       name = lib.mkOption {
