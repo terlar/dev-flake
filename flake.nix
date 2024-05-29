@@ -6,8 +6,8 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
@@ -78,7 +78,7 @@
           {
             imports = [
               inputs.devshell.flakeModule
-              inputs.pre-commit-hooks.flakeModule
+              inputs.git-hooks.flakeModule
               inputs.treefmt.flakeModule
               (importApply ./flake-module { inherit (inputs) call-flake; })
             ];
