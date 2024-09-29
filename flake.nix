@@ -33,9 +33,6 @@
         "x86_64-linux"
       ];
 
-      # Dogfooding
-      imports = [ flake.flakeModule ];
-
       flake = {
         templates = rec {
           default = subflake;
@@ -69,22 +66,18 @@
           };
         };
 
-        flakeModule =
-          let
-            importApply =
-              modulePath: staticArgs:
-              inputs.nixpkgs.lib.setDefaultModuleLocation modulePath (import modulePath staticArgs);
-          in
-          {
-            imports = [
-              inputs.devshell.flakeModule
-              inputs.git-hooks.flakeModule
-              inputs.treefmt.flakeModule
-              (importApply ./flake-module { inherit (inputs) call-flake; })
-            ];
-          };
+        flakeModule = {
+          imports = [
+            inputs.devshell.flakeModule
+            inputs.git-hooks.flakeModule
+            inputs.treefmt.flakeModule
+            (inputs.nixpkgs.lib.modules.importApply ./flake-module { inherit (inputs) call-flake; })
+          ];
+        };
       };
 
+      # Dogfooding
+      imports = [ flake.flakeModule ];
       dev.name = "dev-flake";
 
       perSystem =
