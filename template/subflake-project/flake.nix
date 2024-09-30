@@ -19,6 +19,8 @@
         "x86_64-linux"
       ];
 
+      imports = [ inputs.flake-parts.flakeModules.partitions ];
+
       partitionedAttrs = {
         checks = "dev";
         devShells = "dev";
@@ -30,11 +32,5 @@
           imports = [ ./dev/flake-module.nix ];
         };
       };
-
-      perSystem =
-        { config, ... }:
-        {
-          formatter = config.treefmt.programs.nixfmt.package;
-        };
     };
 }
