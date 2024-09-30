@@ -4,6 +4,7 @@
   lib,
   ...
 }:
+
 let
   inherit (flake-parts-lib) mkPerSystemOption;
   inherit (lib) types;
@@ -13,27 +14,15 @@ in
     dev = {
       name = lib.mkOption {
         type = types.str;
-        description = lib.mdDoc ''
-          The name of the project.
-        '';
+        description = "The name of the project.";
         default = "project";
         example = "my-project";
       };
 
       rootSrc = lib.mkOption {
         type = types.path;
-        description = lib.mdDoc ''
-          The root source of the project.
-        '';
+        description = "The root source of the project.";
         default = self.outPath;
-      };
-
-      rootFlake = lib.mkOption {
-        type = types.raw;
-        description = lib.mdDoc ''
-          The project flake.
-        '';
-        internal = true;
       };
     };
 
@@ -42,27 +31,21 @@ in
         devshell = {
           enable = lib.mkOption {
             type = types.bool;
-            description = lib.mdDoc ''
-              Whether to enable devshell integration.
-            '';
+            description = "Whether to enable devshell integration.";
             default = true;
             example = false;
           };
 
           addCommands = lib.mkOption {
             type = types.bool;
-            description = lib.mdDoc ''
-              Whether to add commands.
-            '';
+            description = "Whether to add commands.";
             default = true;
             example = false;
           };
 
           addReadmeCommand = lib.mkOption {
             type = types.bool;
-            description = lib.mdDoc ''
-              Whether to add readme command.
-            '';
+            description = "Whether to add readme command.";
             default = true;
             example = false;
           };
@@ -70,18 +53,14 @@ in
 
         pre-commit.enable = lib.mkOption {
           type = types.bool;
-          description = lib.mdDoc ''
-            Whether to enable pre-commit integration.
-          '';
+          description = "Whether to enable pre-commit integration.";
           default = true;
           example = false;
         };
 
         treefmt.enable = lib.mkOption {
           type = types.bool;
-          description = lib.mdDoc ''
-            Whether to enable treefmt integration.
-          '';
+          description = "Whether to enable treefmt integration.";
           default = true;
           example = false;
         };

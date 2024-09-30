@@ -28,9 +28,9 @@
       dev.name = "my-project";
 
       perSystem =
-        { pkgs, ... }:
+        { config, ... }:
         {
-          formatter = pkgs.alejandra;
+          formatter = config.treefmt.programs.nixfmt.package;
         };
     };
 }

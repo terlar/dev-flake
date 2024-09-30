@@ -26,5 +26,11 @@
       imports = [ inputs.dev-flake.flakeModule ];
 
       dev.name = "my-project";
+
+      perSystem =
+        { config, ... }:
+        {
+          formatter = config.treefmt.programs.nixfmt.package;
+        };
     };
 }
