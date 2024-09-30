@@ -41,12 +41,8 @@ jobs:
         include:
           - template: root
           - template: root-project
-          - template: subflake
-            init_path: dev
-            check_path: dev
           - template: subflake-project
-            check_path: dev
-
+            dev_path: dev
     name: check-template (${{ matrix.template }})
 
     steps:
@@ -58,25 +54,23 @@ jobs:
       - name: Initialize project
         working-directory: ${{ runner.temp }}
         run: |
-          mkdir -p project/${{ matrix.init_path }}
+          mkdir -p project
           cd project
           git init
 
-      - name: Initialize root flake
-        if: ${{ matrix.init_path }}
-        working-directory: ${{ runner.temp }}/project
-        run: |
-          nix flake init
-
       - name: Initialize flake template
-        working-directory: ${{ runner.temp }}/project/${{ matrix.init_path }}
+        working-directory: ${{ runner.temp }}/project
         run: |
           nix flake init -t ${{ github.workspace }}#${{ matrix.template }}
           git add --all --intent-to-add
           nix flake lock
 
-      - name: Check
-        working-directory: ${{ runner.temp }}/project/${{ matrix.check_path }}
+      - name: Override dev-flake
+        working-directory: ${{ runner.temp }}/project/${{ matrix.dev_path }}
         run: |
-          nix flake lock --override-input dev-flake ${{ github.workspace }}
-          nix flake check
+          nix flake lock --override-input dev-flake path:${{ github.workspace }}
+
+      - name: Check
+        working-directory: ${{ runner.temp }}/project
+        run: |
+          nix flake check --impure

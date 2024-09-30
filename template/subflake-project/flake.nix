@@ -32,11 +32,5 @@
           imports = [ ./dev/flake-module.nix ];
         };
       };
-
-      perSystem =
-        { config, ... }:
-        {
-          formatter = config.treefmt.programs.nixfmt.package;
-        };
     };
 }
