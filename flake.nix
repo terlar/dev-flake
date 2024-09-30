@@ -71,7 +71,7 @@
             inputs.devshell.flakeModule
             inputs.git-hooks.flakeModule
             inputs.treefmt.flakeModule
-            (inputs.nixpkgs.lib.modules.importApply ./flake-module { inherit (inputs) call-flake; })
+            ./flake-module
           ];
         };
       };
