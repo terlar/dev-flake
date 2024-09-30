@@ -25,4 +25,5 @@ policies:
           - test
         scopes:
           - github
+          - template
         descriptionLength: 72
