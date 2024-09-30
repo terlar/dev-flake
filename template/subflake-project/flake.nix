@@ -19,6 +19,8 @@
         "x86_64-linux"
       ];
 
+      imports = [ inputs.flake-parts.flakeModules.partitions ];
+
       partitionedAttrs = {
         checks = "dev";
         devShells = "dev";
