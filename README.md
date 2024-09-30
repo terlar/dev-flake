@@ -46,6 +46,8 @@ To configure more pre-commit hooks, see the [pre-commit-hooks-nix documentation]
 
 To avoid polluting the top-level flake inputs with development inputs, dev-flake can be used in a subflake.
 
+#### Existing project
+
 Within an existing project ([template](template/subflake)):
 
 ```sh
@@ -53,6 +55,25 @@ mkdir -p dev
 cd dev
 nix flake init -t github:terlar/dev-flake
 ```
+
+Add the following to your flake-parts config:
+```nix
+# ...
+imports = [ inputs.flake-parts.flakeModules.partitions ];
+
+partitionedAttrs = {
+  checks = "dev";
+  devShells = "dev";
+};
+
+partitions.dev = {
+  extraInputsFlake = ./dev;
+  module = { imports = [ ./dev/flake-module.nix ]; };
+};
+# ...
+```
+
+#### New project
 
 Create a new project ([template](template/subflake-project)):
 
