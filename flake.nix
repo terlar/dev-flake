@@ -19,7 +19,6 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    call-flake.url = "github:divnix/call-flake";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 

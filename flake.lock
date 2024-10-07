@@ -1,20 +1,5 @@
 {
   "nodes": {
-    "call-flake": {
-      "locked": {
-        "lastModified": 1728179508,
-        "narHash": "sha256-ythzL6iO/eE6r1IA6dflpWx0vC4JBGBlHLTK3BpYhrQ=",
-        "owner": "divnix",
-        "repo": "call-flake",
-        "rev": "ab735e4d1880dd8dd831d6f37721eac2667f59d5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "divnix",
-        "repo": "call-flake",
-        "type": "github"
-      }
-    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -135,7 +120,6 @@
     },
     "root": {
       "inputs": {
-        "call-flake": "call-flake",
         "devshell": "devshell",
         "flake-parts": "flake-parts",
         "git-hooks": "git-hooks",
