@@ -2,10 +2,7 @@
   description = "My Project";
 
   inputs = {
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
     dev-flake = {
       url = "github:terlar/dev-flake";
       inputs.nixpkgs.follows = "nixpkgs";
