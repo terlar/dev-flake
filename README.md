@@ -9,7 +9,7 @@ Features are enabled by default in order to get "the best experience out of the 
 Dependency flake modules:
 
 - [devshell](https://flake.parts/options/devshell.html)
-- [pre-commit-hooks-nix](https://flake.parts/options/pre-commit-hooks-nix.html)
+- [git-hooks-nix](https://flake.parts/options/git-hooks-nix.html)
 - [treefmt-nix](https://flake.parts/options/treefmt-nix.html)
 
 ### Default devShell
@@ -38,7 +38,7 @@ To configure more formatters, see the [treefmt-nix documentation](https://flake.
   - statix
   - treefmt
 
-To configure more pre-commit hooks, see the [pre-commit-hooks-nix documentation](https://flake.parts/options/pre-commit-hooks-nix.html).
+To configure more pre-commit hooks, see the [git-hooks-nix documentation](https://flake.parts/options/git-hooks-nix.html).
 
 ## Usage
 
