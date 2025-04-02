@@ -1,20 +1,17 @@
 { config, lib, ... }:
 
 let
-  rootConfig = config.dev;
+  cfg = config.dev;
 in
 {
   imports = [ ./interface.nix ];
 
   config.perSystem =
     { config, pkgs, ... }:
-    let
-      cfg = config.dev;
-    in
     lib.mkMerge [
       (lib.mkIf cfg.devshell.enable {
         devshells.default = {
-          inherit (rootConfig) name;
+          inherit (cfg) name;
 
           commands = lib.optional cfg.devshell.addReadmeCommand {
             help = "prints the readme";
@@ -55,7 +52,7 @@ in
       (lib.mkIf cfg.pre-commit.enable {
         pre-commit = {
           check.enable = lib.mkDefault true;
-          settings.rootSrc = lib.mkForce rootConfig.rootSrc;
+          settings.rootSrc = lib.mkForce cfg.rootSrc;
           settings.hooks = {
             deadnix.enable = lib.mkDefault true;
             statix.enable = lib.mkDefault true;

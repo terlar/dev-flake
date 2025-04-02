@@ -1,12 +1,10 @@
 {
   self,
-  flake-parts-lib,
   lib,
   ...
 }:
 
 let
-  inherit (flake-parts-lib) mkPerSystemOption;
   inherit (lib) types;
 in
 {
@@ -24,46 +22,42 @@ in
         description = "The root source of the project.";
         default = self.outPath;
       };
-    };
 
-    perSystem = mkPerSystemOption {
-      options.dev = {
-        devshell = {
-          enable = lib.mkOption {
-            type = types.bool;
-            description = "Whether to enable devshell integration.";
-            default = true;
-            example = false;
-          };
-
-          addCommands = lib.mkOption {
-            type = types.bool;
-            description = "Whether to add commands.";
-            default = true;
-            example = false;
-          };
-
-          addReadmeCommand = lib.mkOption {
-            type = types.bool;
-            description = "Whether to add readme command.";
-            default = true;
-            example = false;
-          };
-        };
-
-        pre-commit.enable = lib.mkOption {
+      devshell = {
+        enable = lib.mkOption {
           type = types.bool;
-          description = "Whether to enable pre-commit integration.";
+          description = "Whether to enable devshell integration.";
           default = true;
           example = false;
         };
 
-        treefmt.enable = lib.mkOption {
+        addCommands = lib.mkOption {
           type = types.bool;
-          description = "Whether to enable treefmt integration.";
+          description = "Whether to add commands.";
           default = true;
           example = false;
         };
+
+        addReadmeCommand = lib.mkOption {
+          type = types.bool;
+          description = "Whether to add readme command.";
+          default = true;
+          example = false;
+        };
+      };
+
+      pre-commit.enable = lib.mkOption {
+        type = types.bool;
+        description = "Whether to enable pre-commit integration.";
+        default = true;
+        example = false;
+      };
+
+      treefmt.enable = lib.mkOption {
+        type = types.bool;
+        description = "Whether to enable treefmt integration.";
+        default = true;
+        example = false;
       };
     };
   };
