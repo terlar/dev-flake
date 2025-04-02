@@ -86,6 +86,10 @@
             };
             mdsh.enable = true;
           };
+
+          pre-commit.settings.hooks = {
+            conform.enable = true;
+          };
         };
     };
 }
