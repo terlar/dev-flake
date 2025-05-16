@@ -15,20 +15,30 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # When using flake-parts you don't really use nixpkgs in the dependencies of modules.
+    # Instead everything should be resolved in the final consuming flake.
+    nixpkgs.follows = "flake-parts/nixpkgs-lib";
   };
 
   outputs =
     inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } rec {
-      systems = [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
+    let
+      flakeModule = {
+        imports = [
+          inputs.devshell.flakeModule
+          inputs.git-hooks.flakeModule
+          inputs.treefmt.flakeModule
+          ./flake-module
+        ];
+      };
+    in
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ ];
 
       flake = {
+        inherit flakeModule;
+
         templates = rec {
           default = subflake;
 
@@ -60,36 +70,23 @@
             '';
           };
         };
-
-        flakeModule = {
-          imports = [
-            inputs.devshell.flakeModule
-            inputs.git-hooks.flakeModule
-            inputs.treefmt.flakeModule
-            ./flake-module
-          ];
-        };
       };
 
-      # Dogfooding
-      imports = [ flake.flakeModule ];
-      dev.name = "dev-flake";
+      # Dogfood
+      imports = [
+        inputs.flake-parts.flakeModules.partitions
+        flakeModule
+      ];
 
-      perSystem =
-        { config, pkgs, ... }:
-        {
-          formatter = config.treefmt.programs.nixfmt.package;
-          treefmt.programs = {
-            nixfmt = {
-              enable = true;
-              package = pkgs.nixfmt-rfc-style;
-            };
-            mdsh.enable = true;
-          };
+      partitionedAttrs = {
+        devShells = "dev";
+        formatter = "dev";
+        checks = "dev";
+      };
 
-          pre-commit.settings.hooks = {
-            conform.enable = true;
-          };
-        };
+      partitions.dev = {
+        extraInputsFlake = ./dev;
+        module.imports = [ ./dev/flake-module.nix ];
+      };
     };
 }
