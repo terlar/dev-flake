@@ -49,10 +49,24 @@
             '';
           };
 
+          subflake-nixpkgs = {
+            path = ./template/subflake-nixpkgs;
+            description = ''
+              A flake using dev-flake as subflake with nixpkgs. To be placed in a sub-folder of a project, e.g. dev.
+            '';
+          };
+
           subflake-project = {
             path = ./template/subflake-project;
             description = ''
               A project using dev-flake in a subflake.
+            '';
+          };
+
+          subflake-nixpkgs-project = {
+            path = ./template/subflake-nixpkgs-project;
+            description = ''
+              A project using dev-flake in a subflake with nixpkgs, e.g. no nixpkgs/systems within the main flake.
             '';
           };
 

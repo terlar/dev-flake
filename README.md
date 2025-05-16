@@ -82,6 +82,48 @@ mkdir -p project
 nix flake init -t github:terlar/dev-flake#subflake-project
 ```
 
+### Subflake (with nixpkgs)
+
+If you are creating a flake-parts library or some other flake that only produce system outputs for development purposes, you do not need to include nixpkgs within the main flake.
+
+#### Existing project
+
+Within an existing project ([template](template/subflake-nixpkgs)):
+
+```sh
+mkdir -p dev
+cd dev
+nix flake init -t github:terlar/dev-flake#subflake-nixpkgs
+```
+
+Add the following to your flake-parts config:
+```nix
+# ...
+imports = [ inputs.flake-parts.flakeModules.partitions ];
+
+systems = [ ];
+
+partitionedAttrs = {
+  checks = "dev";
+  devShells = "dev";
+};
+
+partitions.dev = {
+  extraInputsFlake = ./dev;
+  module = { imports = [ ./dev/flake-module.nix ]; };
+};
+# ...
+```
+
+#### New project
+
+Create a new project ([template](template/subflake-nixpkgs-project)):
+
+```sh
+mkdir -p project
+nix flake init -t github:terlar/dev-flake#subflake-nixpkgs-project
+```
+
 ### Root flake
 
 You can also use this flake in the root flake, when using flake-parts, all you need to do is import the flake.
