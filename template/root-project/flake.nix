@@ -24,10 +24,14 @@
 
       dev.name = "my-project";
 
-      perSystem =
-        { config, ... }:
-        {
-          formatter = config.treefmt.programs.nixfmt.package;
+      perSystem = {
+        treefmt.programs = {
+          yamlfmt.enable = true;
         };
+
+        pre-commit.settings.hooks = {
+          conform.enable = true;
+        };
+      };
     };
 }

@@ -8,21 +8,13 @@
 
   dev.name = "dev-flake";
 
-  perSystem =
-    { config, pkgs, ... }:
-    {
-      formatter = config.treefmt.programs.nixfmt.package;
-
-      treefmt.programs = {
-        nixfmt = {
-          enable = true;
-          package = pkgs.nixfmt-rfc-style;
-        };
-        mdsh.enable = true;
-      };
-
-      pre-commit.settings.hooks = {
-        conform.enable = true;
-      };
+  perSystem = {
+    treefmt.programs = {
+      mdsh.enable = true;
     };
+
+    pre-commit.settings.hooks = {
+      conform.enable = true;
+    };
+  };
 }
