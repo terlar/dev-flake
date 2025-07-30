@@ -43,6 +43,8 @@ jobs:
           - template: root-project
           - template: subflake-project
             dev_path: dev
+          - template: subflake-nixpkgs-project
+            dev_path: dev
     name: check-template (${{ matrix.template }})
 
     steps:
