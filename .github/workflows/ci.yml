@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v20
         with:
           diagnostic-endpoint: ''
@@ -48,7 +48,7 @@ jobs:
     name: check-template (${{ matrix.template }})
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: DeterminateSystems/nix-installer-action@v20
         with:
           diagnostic-endpoint: ''
