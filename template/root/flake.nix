@@ -7,7 +7,7 @@
       url = "github:terlar/dev-flake";
       inputs.flake-parts.follows = "flake-parts";
     };
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
   };
 
   outputs =

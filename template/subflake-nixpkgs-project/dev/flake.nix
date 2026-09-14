@@ -3,7 +3,7 @@
 
   inputs = {
     dev-flake.url = "github:terlar/dev-flake";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
   };
 
   outputs = _: { };

@@ -133,7 +133,7 @@ You can also use this flake in the root flake, when using flake-parts, all you n
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
     dev-flake.url = "github:terlar/dev-flake";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
   };
 
   outputs = inputs:
