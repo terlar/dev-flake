@@ -16,7 +16,7 @@ Dependency flake modules:
 
 The default devShell is provided via [devshell](https://flake.parts/options/devshell.html).
 
-- Installs [pre-commit](https://pre-commit.com) hooks.
+- Installs [pre-commit](https://pre-commit.com) hooks via [prek](https://github.com/j178/prek).
 - Menu with available commands.
 - Named shell prompt
 - Can be used together with [direnv](https://direnv.net) for seamless shell integration.
