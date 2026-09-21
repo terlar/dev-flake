@@ -52,10 +52,13 @@ in
       (lib.mkIf cfg.pre-commit.enable {
         pre-commit = {
           check.enable = lib.mkDefault true;
-          settings.rootSrc = lib.mkForce cfg.rootSrc;
-          settings.hooks = {
-            deadnix.enable = lib.mkDefault true;
-            statix.enable = lib.mkDefault true;
+          settings = {
+            package = pkgs.prek;
+            rootSrc = lib.mkForce cfg.rootSrc;
+            hooks = {
+              deadnix.enable = lib.mkDefault true;
+              statix.enable = lib.mkDefault true;
+            };
           };
         };
 
